@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt
+
 from PySide6.QtWidgets import (QMainWindow, 
                                QWidget, QVBoxLayout)
 
@@ -12,9 +12,12 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.cw)
 
         self.setWindowTitle('Calculator')
+    
 
     def adjustFixedSize(self) -> None:
         self.adjustSize()
         self.setFixedSize(self.width(), self.height())
 
+    def addWidgetToVLayout(self,widget: QWidget):
+        self.v_layout.addWidget(widget)
 
