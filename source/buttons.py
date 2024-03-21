@@ -32,7 +32,6 @@ class ButtonsGrid(QGridLayout):
             ['1', '2', '3', '+'],
             ['',  '0', '.', '='],
         ]
-
         self.display = display
         self.info = info
         self._equation = ''
@@ -48,21 +47,29 @@ class ButtonsGrid(QGridLayout):
         self.info.setText(value)
 
     def _makeGrid(self):
-        for i , row in enumerate(self._gridMask):
-            for j , buttonText in enumerate(row):
+        for rowNumber, rowData in enumerate(self._gridMask):
+            for colNumber, buttonText in enumerate(rowData):
                 button = Button(buttonText)
 
                 if not isNumOrDot(buttonText) and not isEmpty(buttonText):
                     button.setProperty('cssClass', 'specialButton')
+                    self._configSpecialButton(button)
+                
 
-                self.addWidget(button , i , j)
-                buttonSlot = self._makeButtonDisplaySlot(
-                    self._insertButtonTextToDisplay,
-                    button,
-                    )
-                button.clicked.connect(buttonSlot)
+                self.addWidget(button, rowNumber, colNumber)
+                slot = self._makeSlot(self._insertButtonTextToDisplay, button)
+                self._connectButtonClicked(button, slot)
+
+    def _connectButtonClicked(self, button , slot):
+        button.clicked.connect(slot)
     
-    def _makeButtonDisplaySlot(self, func, *args, **kwargs):
+    def _configSpecialButton(self, button):
+        text = button.text()
+
+        if text == 'C':
+            self._connectButtonClicked(button, self._clear)
+    
+    def _makeSlot(self, func, *args, **kwargs):
         @Slot(bool)
         def realSlot(_):
             func(*args, **kwargs)
@@ -77,3 +84,6 @@ class ButtonsGrid(QGridLayout):
             return
         
         self.display.insert(buttonText)
+
+    def _clear(self):
+        self.display.clear()

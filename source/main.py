@@ -8,6 +8,7 @@ from PySide6.QtWidgets import QApplication
 from variables import WINDOW_ICON_PATH
 from styles import setupTheme
 from buttons import Button, ButtonsGrid
+import qdarktheme
 
 if __name__ == '__main__':
 
@@ -16,7 +17,7 @@ if __name__ == '__main__':
 
     app = QApplication()
 
-    setupTheme()
+    dark_stylesheet = qdarktheme.load_stylesheet('dark')
     
     window = MainWindow()
 
@@ -43,6 +44,7 @@ if __name__ == '__main__':
     buttonsGrid.addWidget(Button('2'), 0 , 2)
     
 
+    app.setStyleSheet(dark_stylesheet)
     window.adjustFixedSize()
     window.show()
     app.exec()
