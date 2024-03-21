@@ -34,7 +34,7 @@ if __name__ == '__main__':
     window.addWidgetTovLayout(display)
 
     # Grid
-    buttonsGrid = ButtonsGrid()
+    buttonsGrid = ButtonsGrid(display)
     window.vLayout.addLayout(buttonsGrid)
 
     # Button
@@ -47,4 +47,4 @@ if __name__ == '__main__':
     window.show()
     app.exec()
     
-     
+    
