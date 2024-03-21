@@ -7,7 +7,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from variables import WINDOW_ICON_PATH
 from styles import setupTheme
-from buttons import Button
+from buttons import Button, ButtonsGrid
 
 if __name__ == '__main__':
 
@@ -33,9 +33,14 @@ if __name__ == '__main__':
     display = Display()
     window.addWidgetTovLayout(display)
 
+    # Grid
+    buttonsGrid = ButtonsGrid()
+    window.vLayout.addLayout(buttonsGrid)
+
     # Button
-    button = Button('Texto do botão')
-    window.addWidgetTovLayout(button)
+    buttonsGrid.addWidget(Button('0'), 0 , 0)
+    buttonsGrid.addWidget(Button('1'), 0 , 1)
+    buttonsGrid.addWidget(Button('2'), 0 , 2)
     
 
     window.adjustFixedSize()
