@@ -17,8 +17,10 @@ class Button(QPushButton):
         self.configStyle()
 
     def configStyle(self):
-        self.setStyleSheet(f'font-size: {MEDIUM_FONT_SIZE}px;')
-        self.setMinimumSize(75,75)
+        font = self.font()
+        font.setPixelSize(MEDIUM_FONT_SIZE)
+        self.setFont(font)
+        self.setMinimumSize(75, 75)
         
 
 class ButtonsGrid(QGridLayout):
@@ -35,6 +37,12 @@ class ButtonsGrid(QGridLayout):
         self.display = display
         self.info = info
         self._equation = ''
+        self._equationInitialValue = 'Your calculation'
+        self._left = None
+        self._right = None
+        self._op = None
+
+        self.equation = self._equationInitialValue
         self._makeGrid()
 
     @property
@@ -68,6 +76,11 @@ class ButtonsGrid(QGridLayout):
 
         if text == 'C':
             self._connectButtonClicked(button, self._clear)
+
+        if text in '+-/*':
+            self._connectButtonClicked(
+                button, 
+                self._makeSlot(self._operatorClicked, button))
     
     def _makeSlot(self, func, *args, **kwargs):
         @Slot(bool)
@@ -86,4 +99,23 @@ class ButtonsGrid(QGridLayout):
         self.display.insert(buttonText)
 
     def _clear(self):
+        self._left = None
+        self._right = None
+        self._op = None
+        self.equation = self._equationInitialValue
         self.display.clear()
+
+    def _operatorClicked(self, button):
+        buttonText = button.text()
+        displayText = self.display.text()
+        self.display.clear()
+        
+        if not isValidNumber(displayText) and self._left is None:
+            print('Não tem nada na esquerda')
+            return
+
+        if self._left is None:
+            self._left = float(displayText)
+        
+        self._op = buttonText
+        self.equation = f'{self._left} {self._op} ???'
