@@ -6,6 +6,7 @@ from main_window import MainWindow
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from variables import WINDOW_ICON_PATH
+from styles import setupTheme
 
 if __name__ == '__main__':
 
@@ -13,6 +14,9 @@ if __name__ == '__main__':
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
     app = QApplication()
+
+    setupTheme()
+    
     window = MainWindow()
 
     # Define the icon
