@@ -36,14 +36,8 @@ if __name__ == '__main__':
 
     # Grid
     buttonsGrid = ButtonsGrid(display, info)
-    window.vLayout.addLayout(buttonsGrid)
-
-    # Button
-    buttonsGrid.addWidget(Button('0'), 0 , 0)
-    buttonsGrid.addWidget(Button('1'), 0 , 1)
-    buttonsGrid.addWidget(Button('2'), 0 , 2)
+    window.vLayout.addLayout(buttonsGrid) 
     
-
     app.setStyleSheet(dark_stylesheet)
     window.adjustFixedSize()
     window.show()
