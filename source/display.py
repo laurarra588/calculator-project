@@ -2,9 +2,12 @@ from PySide6.QtGui import QKeyEvent
 from PySide6.QtWidgets import QLineEdit
 from variables import BIG_FONT_SIZE, TEXT_MARGIN , MINIMUM_WIDTH
 from PySide6.QtCore import Qt , Signal
+from utils import isEmpty
 
 class Display(QLineEdit):
-    eqRequested = Signal()
+    eqPressed = Signal()
+    delPressed = Signal()
+    clearPressed = Signal()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -19,9 +22,25 @@ class Display(QLineEdit):
         self.setTextMargins(*margins)
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
+        text = event.text().strip()
         key = event.key()
         KEYS = Qt.Key
 
-        if key == KEYS.Key_Enter:
-            self.eqRequested.emit()
+        isEnter = key in [KEYS.Key_Enter, KEYS.Key_Return]
+        isDelete = key in [KEYS.Key_Backspace, KEYS.Key_Delete]
+        isEsc = key in [KEYS.Key_Escape]
+
+        if isEnter:
+            self.eqPressed.emit()
+            return event.ignore()
+        
+        if isDelete:
+            self.delPressed.emit()
+            return event.ignore()
+        
+        if isEsc:
+            self.clearPressed.emit()
+            return event.ignore()
+        
+        if isEmpty(text):
             return event.ignore()
