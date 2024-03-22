@@ -85,10 +85,10 @@ class ButtonsGrid(QGridLayout):
                 button, 
                 self._makeSlot(self._operatorClicked, button))
             
-        if text in '=':
+        if text in 'D':
             self._connectButtonClicked(button,self.display.backspace)
 
-        if text in 'D':
+        if text in '=':
             self._connectButtonClicked(button,self._eq)
     
     def _makeSlot(self, func, *args, **kwargs):
@@ -120,7 +120,7 @@ class ButtonsGrid(QGridLayout):
         self.display.clear()
         
         if not isValidNumber(displayText) and self._left is None:
-            self._showError('Você não digitou nada.')
+            self._showError('You have not written anything.')
             return
 
         if self._left is None:
@@ -133,7 +133,7 @@ class ButtonsGrid(QGridLayout):
         displayText = self.display.text()
 
         if not isValidNumber(displayText):
-            print('nothing in right')
+            self._showError('You have not written the other number.')
             return
         
         self._right = float(displayText)
@@ -146,9 +146,9 @@ class ButtonsGrid(QGridLayout):
             else:
                 result = eval(self.equation)
         except ZeroDivisionError:
-            print('Zero division error')
+            self._showError('Division by zero.')
         except OverflowError:
-            print('Big number')
+            self._showError('This calculation cannot be done.')
         
         self.display.clear()
         self.info.setText(f'{self.equation} = {result}')
@@ -158,8 +158,17 @@ class ButtonsGrid(QGridLayout):
         if result == 'error':
             self._left = None
 
-    def _showError(self, text):
+    def _makeDialog(self, text):
         msgBox = self.window.makeMsgBox()
         msgBox.setText(text)
+        return msgBox
+
+    def _showError(self, text):
+        msgBox = self._makeDialog(text)
         msgBox.setIcon(msgBox.Icon.Critical)
+        msgBox.exec()
+
+    def _showInfo(self, text):
+        msgBox = self._makeDialog(text)
+        msgBox.setIcon(msgBox.Icon.Information)
         msgBox.exec()
