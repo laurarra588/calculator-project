@@ -27,10 +27,10 @@ class Display(QLineEdit):
         KEYS = Qt.Key
 
         isEnter = key in [KEYS.Key_Enter, KEYS.Key_Return]
-        isDelete = key in [KEYS.Key_Backspace, KEYS.Key_Delete]
+        isDelete = key in [KEYS.Key_Backspace, KEYS.Key_Delete , KEYS.Key_C]
         isEsc = key in [KEYS.Key_Escape]
 
-        if isEnter:
+        if isEnter or text == '=':
             self.eqPressed.emit()
             return event.ignore()
         
