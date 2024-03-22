@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from display import Display
     from info import Info
+    from main_window import MainWindow
 
 
 class Button(QPushButton):
@@ -24,7 +25,8 @@ class Button(QPushButton):
         
 
 class ButtonsGrid(QGridLayout):
-    def __init__(self, display: 'Display' , info: 'Info' , *args, **kwargs) -> None:
+    def __init__(self, display: 'Display' , info: 'Info' , window : 'MainWindow' ,
+                  *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self._gridMask = [
@@ -36,6 +38,7 @@ class ButtonsGrid(QGridLayout):
         ]
         self.display = display
         self.info = info
+        self.window = window
         self._equation = ''
         self._equationInitialValue = 'Your calculation'
         self._left = None
@@ -117,7 +120,7 @@ class ButtonsGrid(QGridLayout):
         self.display.clear()
         
         if not isValidNumber(displayText) and self._left is None:
-            print('Não tem nada na esquerda')
+            self._showError('Você não digitou nada.')
             return
 
         if self._left is None:
@@ -155,3 +158,8 @@ class ButtonsGrid(QGridLayout):
         if result == 'error':
             self._left = None
 
+    def _showError(self, text):
+        msgBox = self.window.makeMsgBox()
+        msgBox.setText(text)
+        msgBox.setIcon(msgBox.Icon.Critical)
+        msgBox.exec()

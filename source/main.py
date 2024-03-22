@@ -35,7 +35,7 @@ if __name__ == '__main__':
     window.addWidgetTovLayout(display)
 
     # Grid
-    buttonsGrid = ButtonsGrid(display, info)
+    buttonsGrid = ButtonsGrid(display, info, window)
     window.vLayout.addLayout(buttonsGrid) 
     
     app.setStyleSheet(dark_stylesheet)
